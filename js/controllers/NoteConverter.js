@@ -12,7 +12,9 @@ var NoteConverter = Backbone.Model.extend({
     },
     
     getFrequencyFromNoteName: function(noteName) {
-        return this.getFrequencyFromNoteNumber(this.getNoteNumberFromNoteName(noteName));
+        var freq = this.getFrequencyFromNoteNumber(this.getNoteNumberFromName(noteName));
+        console.log(freq);
+        return freq;
     },
     
     getFrequencyFromNoteNumber: function(noteNumber) {
