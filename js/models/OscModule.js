@@ -73,7 +73,6 @@ var OscModule = BaseModule.extend({
     },
     
     playFromPosition:function(position) {
-        this.setTuning(mapValue(position.y, 0, $(document).innerHeight(), -50, 50));
         this.play(Math.round(mapValue(position.x, 0, $(document).innerWidth(), 60, 61)));
     },
     
