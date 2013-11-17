@@ -1,9 +1,5 @@
-var StepModule = BaseModule.extend({
-    defaults: {
-        numberOfSteps: 3,
-        defaultStep: 1
-    },
-    initialize: function() {
-        this.set('currentStep', this.get('defaultStep'));
+var StepModule = LineModule.extend({
+    getValue: function() {
+        return Math.round(mapValue(this.get('output').gain.value, 0, 1, this.get('range').lo, this.get('range').hi));
     }
 });
