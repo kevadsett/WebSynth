@@ -3,18 +3,17 @@ var OscModule = BaseModule.extend({
         var context = this.get('context');
         if(context !== undefined) {
             this.set({
-                amplitude: new LineModule({context: context}),
-                octaveOffset: new StepModule({context: context, numberOfSteps:5, defaultStep:2}),
-                pitchOffset: new StepModule({context: context, numberOfSteps:24, defaultStep:12}),
+                amplitude: context.createGain(),
+                /*octaveOffset: new StepModule({context: context, numberOfSteps:5, defaultStep:2}),
+                pitchOffset: new StepModule({context: context, numberOfSteps:24, defaultStep:12}),*/
                 output: context.createOscillator()
             });
             
             this.get('output').start(0);
-            this.connect(this.get('amplitude').get('output'));
+            this.connect(this.get('amplitude'));
             this.get('amplitude').connect(context.destination);
         }
     },
-    
     setContext: function(context) {
         this.set('context', context);
         this.get('amplitude').context = context;
@@ -30,7 +29,11 @@ var OscModule = BaseModule.extend({
     },
     
     startNote: function() {
-        this.get('amplitude').setToMaxValue();
+        this.get('amplitude').gain.value = 1;
+    },
+    
+    setAmplitude: function(value) {
+        this.get('amplitude').gain.value = value;
     },
     
     setFrequency: function(frequency) {
@@ -43,11 +46,11 @@ var OscModule = BaseModule.extend({
     },
     
     stop: function() {
-        this.get('amplitude').setToMinValue();
+        this.get('amplitude').gain.value = 0;
     },
     
     start: function(noteNumber) {
-        var finalNoteNumber = noteNumber + (12 * this.get('octaveOffset').getValue()) + this.get('pitchOffset').getValue();
+        var finalNoteNumber = noteNumber //+ (12 * this.get('octaveOffset').getValue()) + this.get('pitchOffset').getValue();
         this.setFrequency(WebSynth.NoteConverter.getFrequencyFromNoteNumber(finalNoteNumber));
         this.startNote();
     }
